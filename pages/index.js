@@ -3,35 +3,6 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import appConfig from '../config.json';
 
-function GlobalStyle() {
-   return (
-      <style global jsx>
-         {`*{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            list-style: none;
-         }
-         body {
-            font-family: 'Open Sans', sans-serif;
-         }
-         /*App fit Heigth*/
-         html, body, #__next {
-            min-height: 100vh;
-            display: flex;
-            flex: 1;
-         }
-         #__next {
-            flex: 1;
-         }
-         #__next > * {
-            flex: 1;
-         }
-         /* ./App fit Heigth*/    
-         `}</style>
-   );
-}
-
 function Titulo(props) {
    const Tag = props.tag || 'h1';
    return (
@@ -67,7 +38,6 @@ export default function PaginaInicial() {
 
    return (
       <>
-         <GlobalStyle />
          <Box
             styleSheet={{
                display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -89,6 +59,7 @@ export default function PaginaInicial() {
                   borderRadius: '5px', padding: '32px', margin: '16px',
                   boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
                   backgroundColor: appConfig.theme.colors.neutrals[700],
+                  backdropFilter: 'blur(9.8px)'
                }}
             >
                {/* Formulário */}
@@ -110,18 +81,6 @@ export default function PaginaInicial() {
                      {appConfig.name}
                   </Text>
 
-                  {/* <input
-                             type="text"
-                             value={username}
-                             onChange={function (event) {
-                                 console.log('usuario digitou', event.target.value);
-                                 // Onde ta o valor?
-                                 const valor = event.target.value;
-                                 // Trocar o valor da variavel
-                                 // através do React e avise quem precisa
-                                 setUsername(valor);
-                             }}
-                         /> */}
                   <TextField
                      value={username}
                      onChange={function (event) {
@@ -146,11 +105,13 @@ export default function PaginaInicial() {
                      type='submit'
                      label='Entrar'
                      fullWidth
+                     disabled={username.length < 2}
                      buttonColors={{
                         contrastColor: appConfig.theme.colors.neutrals["000"],
-                        mainColor: appConfig.theme.colors.primary[500],
-                        mainColorLight: appConfig.theme.colors.primary[400],
-                        mainColorStrong: appConfig.theme.colors.primary[600],
+                        mainColor: username.length >= 2 ? appConfig.theme.colors.primary[600] : appConfig.theme.colors.neutrals[500],
+                        mainColorLight: username.length >= 2 && appConfig.theme.colors.primary[400],
+                        mainColorStrong: username.length >= 2 && appConfig.theme.colors.primary[600],
+                        // '#29333D'
                      }}
                   />
                </Box>
