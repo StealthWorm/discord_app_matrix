@@ -6,7 +6,6 @@ import appConfig from '../config.json';
 import ReactLoading from 'react-loading';
 import { useRouter } from 'next/router';
 import { ButtonSendSticker } from '../src/components/ButtonSendSticker';
-import axios from 'axios';
 
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzMxNDQyNCwiZXhwIjoxOTU4ODkwNDI0fQ.ZFBcsfX33ykUzScSQdzpAjjiamrlZ4cBQiEoavCLhNk'
 const SUPABASE_URL = 'https://pwltogkpiszitaimxdci.supabase.co'
@@ -31,12 +30,18 @@ export default function ChatPage() {
             setListaDeMensagens(data)
          });
 
-      escutaMensagensEmTempoReal((novaMensagem) => {
+      const subscription = escutaMensagensEmTempoReal((novaMensagem) => {
          setListaDeMensagens((valorAtualDaLista) => {
-            return [novaMensagem, ...valorAtualDaLista]
-            // setListaDeMensagens(prevState => [mensagem, ...prevState]);
-         })
+            return [
+               novaMensagem,
+               ...valorAtualDaLista,
+            ]
+         });
       });
+
+      return () => {
+         subscription.unsubscribe();
+      }
    }, []);
 
    function handleNovaMensagem(novaMensagem) {
@@ -144,22 +149,17 @@ function Header() {
 }
 
 function MessageList(props) {
-   const [user, setUser] = useState("");
+   const [user, setUser] = useState({ id: "", name: "" });;
    const [isOpen, setOpenState] = React.useState('');
 
-   async function UserData(name) {
-      const response = await fetch(`https://api.github.com/users/${name}`);
+   useEffect(() => {
+      async function teste() {
+         const response = await fetch(`https://api.github.com/users/${user.name}`);
+         console.log(response);
+      }
 
-      fetch(`https://api.github.com/users/${name}`)
-         .then(response => response.json())
-         .then(data => {
-            console.log(data);
-         })
-      // return 
-      // <div>
-      //    <h1>{response.name}</h1>
-      // </div>
-   }
+      teste()
+   }, [user])
 
    return (
       <Box tag="ul" styleSheet={{
@@ -182,7 +182,7 @@ function MessageList(props) {
                {props.mensagens.map((mensagem) => {
                   return (
                      <Text key={mensagem.id} tag="li" styleSheet={{
-                        borderRadius: '5px', padding: '6px', marginBottom: '12px', width: '100%',
+                        borderRadius: '5px', padding: '6px', marginBottom: '12px', width: '100%', display: 'flex',
                         hover: {
                            backgroundColor: appConfig.theme.colors.neutrals[700],
                         }
@@ -202,9 +202,9 @@ function MessageList(props) {
                                  transform: 'scale(1.1)'
                               }
                            }}
-                              onClick={() => setOpenState(!isOpen)}
+                              onClick={() => { setOpenState(!isOpen); setUser({ id: mensagem.id, name: mensagem.de }) }}
                            />
-                           {isOpen &&
+                           {isOpen && mensagem.id === user.id &&
                               <Box styleSheet={{
                                  display: 'flex',
                                  flexDirection: 'column',
@@ -223,7 +223,7 @@ function MessageList(props) {
                               }}
                                  onClick={() => setOpenState(false)}
                               >
-                                 <UserData name={mensagem.de} />
+                                 {mensagem.de}
                               </Box>
                            }
 
@@ -239,7 +239,7 @@ function MessageList(props) {
                         </Box>
 
                         {mensagem.texto.startsWith(':sticker:')
-                           ? <Image src={mensagem.texto.replace(':sticker:', '')} />
+                           ? <Image src={mensagem.texto.replace(':sticker:', '')} styleSheet={{ height: '200px', width: '200px' }} />
                            : mensagem.texto
                         }
                      </Text>
