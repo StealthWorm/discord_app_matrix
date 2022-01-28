@@ -22,6 +22,11 @@ function GlobalStyle() {
      #__next > * {
        flex: 1;
      }
+     body img {
+        backgroundSize: contain;
+        height: 100vh;
+        transform: scale(0.8);
+     }
      /* ./App fit Height */ 
    `}</style>
    );

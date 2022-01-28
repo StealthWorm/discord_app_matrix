@@ -19,18 +19,6 @@ function Titulo(props) {
    );
 }
 
-// Componente React
-// function HomePage() {
-//    // JSX
-//    return (
-//       <div>
-//          <GlobalStyle />
-//          <Titulo tag="h2">Boas vindas de volta!</Titulo>
-//          <h2>Discord - Alura Matrix</h2>
-//       </div>
-//    )
-// }
-
 export default function PaginaInicial() {
    // const username = 'omariosouto';
    const [username, setUsername] = React.useState('omariosouto');
@@ -41,8 +29,8 @@ export default function PaginaInicial() {
          <Box
             styleSheet={{
                display: 'flex', alignItems: 'center', justifyContent: 'center',
-               backgroundColor: appConfig.theme.colors.primary[500],
-               backgroundImage: 'url(https://virtualbackgrounds.site/wp-content/uploads/2020/08/the-matrix-digital-rain.jpg)',
+               // backgroundColor: appConfig.theme.colors.primary[500],
+               backgroundImage: 'url(https://thumbs.gfycat.com/BraveOptimalBaleenwhale-size_restricted.gif)',
                backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',
             }}
          >
@@ -57,9 +45,10 @@ export default function PaginaInicial() {
                   },
                   width: '100%', maxWidth: '700px',
                   borderRadius: '5px', padding: '32px', margin: '16px',
-                  boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
-                  backgroundColor: appConfig.theme.colors.neutrals[700],
-                  backdropFilter: 'blur(9.8px)'
+                  boxShadow: '0 2px 10px 10px rgb(0 0 0 / 20%)',
+                  // background: 'radial-gradient(106.06% 101.68% at 4.19% 8.33%, rgba(255, 255, 255, 0.2)  0.09%, transparent 100%);'
+                  background: 'radial-gradient(106.06% 101.68% at 4.19% 8.33%, rgba(21, 8, 64, 0.4) 0.09%, transparent 28.02%, rgba(138, 31, 138, 0.5) 70%, rgba(254, 94, 83, 0.3) 100%);',
+                  backdropFilter: 'blur(9.8px)',
                }}
             >
                {/* Formulário */}
@@ -67,8 +56,7 @@ export default function PaginaInicial() {
                   as="form"
                   onSubmit={function (infosDoEvento) {
                      infosDoEvento.preventDefault();
-                     console.log('Alguém submeteu o form');
-                     roteamento.push('/chat');
+                     roteamento.push(`/chat?username=${username}`);
                      // window.location.href = '/chat';
                   }}
                   styleSheet={{
@@ -77,18 +65,14 @@ export default function PaginaInicial() {
                   }}
                >
                   <Titulo tag="h2">Boas vindas de volta!</Titulo>
-                  <Text variant="body3" styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals[300] }}>
+                  <Text variant="body3" styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.primary[900] }}>
                      {appConfig.name}
                   </Text>
 
                   <TextField
                      value={username}
                      onChange={function (event) {
-                        console.log('usuario digitou', event.target.value);
-                        // Onde ta o valor?
                         const valor = event.target.value;
-                        // Trocar o valor da variavel
-                        // através do React e avise quem precisa
                         setUsername(valor);
                      }}
                      fullWidth
@@ -96,7 +80,7 @@ export default function PaginaInicial() {
                         neutral: {
                            textColor: appConfig.theme.colors.neutrals[200],
                            mainColor: appConfig.theme.colors.neutrals[900],
-                           mainColorHighlight: appConfig.theme.colors.primary[500],
+                           mainColorHighlight: appConfig.theme.colors.primary[300],
                            backgroundColor: appConfig.theme.colors.neutrals[800],
                         },
                      }}
@@ -108,10 +92,9 @@ export default function PaginaInicial() {
                      disabled={username.length < 2}
                      buttonColors={{
                         contrastColor: appConfig.theme.colors.neutrals["000"],
-                        mainColor: username.length >= 2 ? appConfig.theme.colors.primary[600] : appConfig.theme.colors.neutrals[500],
+                        mainColor: username.length >= 2 ? appConfig.theme.colors.primary[700] : appConfig.theme.colors.neutrals[500],
                         mainColorLight: username.length >= 2 && appConfig.theme.colors.primary[400],
-                        mainColorStrong: username.length >= 2 && appConfig.theme.colors.primary[600],
-                        // '#29333D'
+                        mainColorStrong: username.length >= 2 && appConfig.theme.colors.primary[800],
                      }}
                   />
                </Box>
@@ -128,7 +111,7 @@ export default function PaginaInicial() {
                      padding: '16px',
                      backgroundColor: appConfig.theme.colors.neutrals[800],
                      border: '1px solid',
-                     borderColor: appConfig.theme.colors.neutrals[999],
+                     borderColor: appConfig.theme.colors.primary[100],
                      borderRadius: '10px',
                      flex: 1,
                      minHeight: '240px',
@@ -138,6 +121,7 @@ export default function PaginaInicial() {
                      styleSheet={{
                         borderRadius: '50%',
                         marginBottom: '16px',
+                        border: `3px solid ${appConfig.theme.colors.primary[100]}`
                      }}
                      src={`https://github.com/${username}.png`}
                   />
