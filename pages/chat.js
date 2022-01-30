@@ -149,13 +149,19 @@ function Header() {
 }
 
 function MessageList(props) {
-   const [user, setUser] = useState({ id: "", name: "" });;
+   const [user, setUser] = useState({ id: "", name: "" });
+   const [userData, setUserData] = useState({ name: "", bio: "", url: "" });
    const [isOpen, setOpenState] = React.useState('');
 
    useEffect(() => {
       async function teste() {
-         const response = await fetch(`https://api.github.com/users/${user.name}`);
-         console.log(response);
+         const response = await fetch(`https://api.github.com/users/${user.name}`)
+            .then(res => res.json())
+            .then(data => {
+               console.log(data)
+               const { name, bio, html_url } = data;
+               setUserData({ name: name, bio: bio, url: html_url })
+            });
       }
 
       teste()
@@ -169,7 +175,9 @@ function MessageList(props) {
          flex: 1,
          color: appConfig.theme.colors.neutrals["000"],
          marginBottom: '16px',
+         width: '192vh',
       }}
+         onscroll={() => setOpenState(false)}
       >
          {props.mensagens.length <= 0
             ?
@@ -182,7 +190,7 @@ function MessageList(props) {
                {props.mensagens.map((mensagem) => {
                   return (
                      <Text key={mensagem.id} tag="li" styleSheet={{
-                        borderRadius: '5px', padding: '6px', marginBottom: '12px', width: '100%', display: 'flex',
+                        borderRadius: '5px', padding: '6px', marginBottom: '12px', width: '100%',
                         hover: {
                            backgroundColor: appConfig.theme.colors.neutrals[700],
                         }
@@ -197,17 +205,21 @@ function MessageList(props) {
                               marginRight: '8px',
                               border: `3px solid ${appConfig.theme.colors.primary[700]}`,
                               transition: '0.5s',
+                              cursor: 'pointer',
                               hover: {
                                  backgroundColor: appConfig.theme.colors.neutrals[700],
                                  transform: 'scale(1.1)'
                               }
                            }}
-                              onClick={() => { setOpenState(!isOpen); setUser({ id: mensagem.id, name: mensagem.de }) }}
+                              onClick={() => { setUser({ id: mensagem.id, name: mensagem.de }); setOpenState(!isOpen); }}
                            />
                            {isOpen && mensagem.id === user.id &&
                               <Box styleSheet={{
+                                 zIndex: 1,
                                  display: 'flex',
                                  flexDirection: 'column',
+                                 alignItems: 'center',
+                                 justifyContent: 'space-between',
                                  borderRadius: '5px',
                                  position: 'absolute',
                                  backgroundColor: appConfig.theme.colors.neutrals[800],
@@ -215,7 +227,7 @@ function MessageList(props) {
                                     xs: '200px',
                                     sm: '290px',
                                  },
-                                 height: '300px',
+                                 height: '200px',
                                  left: '100px',
                                  top: '30px',
                                  padding: '16px',
@@ -223,7 +235,9 @@ function MessageList(props) {
                               }}
                                  onClick={() => setOpenState(false)}
                               >
-                                 {mensagem.de}
+                                 <h2 style={{ width: '100%', borderBottom: '1px solid #fff', backgroundColor: appConfig.theme.colors.neutrals[800], paddingBottom: '10px' }}>{userData.name}</h2>
+                                 <p style={{ overflowY: 'auto' }}>{userData.bio}</p>
+                                 <a href={userData.url} target="_blank" style={{ color: appConfig.theme.colors.primary[300] }}>{userData.url}</a>
                               </Box>
                            }
 
