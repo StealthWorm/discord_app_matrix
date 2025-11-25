@@ -7,8 +7,8 @@ import ReactLoading from 'react-loading';
 import { useRouter } from 'next/router';
 import { ButtonSendSticker } from '../src/components/ButtonSendSticker';
 
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzMxNDQyNCwiZXhwIjoxOTU4ODkwNDI0fQ.ZFBcsfX33ykUzScSQdzpAjjiamrlZ4cBQiEoavCLhNk'
-const SUPABASE_URL = 'https://pwltogkpiszitaimxdci.supabase.co'
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZzdWRmeGtnbHlkb3pnZHZidnFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5Njk0NjcsImV4cCI6MjA3OTU0NTQ2N30.6qEfNlhoQQRhnVvG2OxZqFL5x-eL39MPQK6QKyLKUsk'
+const SUPABASE_URL = 'https://fsudfxkglydozgdvbvqf.supabase.co'
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 function escutaMensagensEmTempoReal(adicionaMensagem) {
